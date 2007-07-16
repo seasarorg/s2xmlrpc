@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+"http://www.seasar.org/dtd/components23.dtd">
+<components>
+    <component name="EmployeeService" class="org.seasar.remoting.xmlrpc.test.service.impl.EmployeeServiceImpl">
+    	<meta name="xmlrpc"/>
+    </component>
+    <component name="Echo" class="org.seasar.remoting.xmlrpc.test.service.impl.EchoImpl">
+    	<meta name="xmlrpc"/>
+    </component>
+</components>

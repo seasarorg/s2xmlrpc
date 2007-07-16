@@ -1,0 +1,6 @@
+-------------------------------------------------------------------------------
+Battery: org.seasar.remoting.xmlrpc.client.S2XmlRpcClientFactoryTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.076 sec 
+
+

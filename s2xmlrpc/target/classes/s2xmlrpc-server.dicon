@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+"http://www.seasar.org/dtd/components23.dtd">
+<components namespace="xmlrpc-server">
+	<include path="s2xmlrpc.dicon" />
+    <component name="xmlRpcWebServer"
+        class="org.seasar.remoting.xmlrpc.server.S2XmlRpcWebServer">
+        <arg>8080</arg>
+        <initMethod name="deploy"/>
+        <property name="deployer">deployer</property>
+    </component>
+</components>

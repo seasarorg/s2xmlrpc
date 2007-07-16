@@ -1,0 +1,6 @@
+-------------------------------------------------------------------------------
+Battery: org.seasar.remoting.xmlrpc.deployer.XmlRpcDeployerTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.108 sec 
+
+
