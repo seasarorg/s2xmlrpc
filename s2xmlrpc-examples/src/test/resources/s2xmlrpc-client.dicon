@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+"http://www.seasar.org/dtd/components23.dtd">
+<components>
+    
+    <component name="ioRemoting"
+               class="org.seasar.remoting.common.interceptor.RemotingInterceptor">
+        <property name="connector">ioConnector</property>
+    </component>
+    
+    <component name="ioConnector"
+               class="org.seasar.remoting.xmlrpc.connector.XmlRpcConnector">
+        <property name="baseURL">baseURL</property>
+    </component>
+                
+    <component name="baseURL" class="java.net.URL" autoBinding="none">
+        <arg>"http://localhost:8080/s2xmlrpc-examples/xmlrpc"</arg>
+    </component>
+    
+</components>
