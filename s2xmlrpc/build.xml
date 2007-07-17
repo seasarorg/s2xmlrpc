@@ -18,6 +18,7 @@
       </zipfileset>
         <zipfileset prefix="s2xmlrpc/doc" dir="../s2xmlrpc-www">
           <exclude name="**/download/**"/>
+          <exclude name="**/apidocs/**"/>
           <exclude name=".project"/>
         </zipfileset>
 	    <zipfileset prefix="s2xmlrpc/doc/apidocs" dir="target/site/apidocs">
