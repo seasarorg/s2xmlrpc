@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!-- don't edit start -->
+<head>
+<title>Seasar - DI Container with AOP - </title>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<link href="seasar_b.css" type="text/css" rel="stylesheet" media="screen">
+<link href="seasar_p.css" type="text/css" rel="stylesheet" media="print">
+<script src="seasar_b.js" type="text/JavaScript" language="JavaScript"></script>
+</head><body onload="preload('ja')"><table width="100%" border="0" cellspacing="0" cellpadding="0" align="left"><tr>
+<td align="left" valign="top" width="780"><table width="780" border="0" cellspacing="0" cellpadding="0" class="white">
+<tr><td colspan="7"><img height="5" width="780" src="images/top01_b.gif" alt=""></td></tr>
+<tr><td><img height="117" width="235" src="images/top02_b.gif" alt="Seasar"></td>
+<td colspan="3"><img height="117" width="289" src="images/top03.gif" alt="DI Container with AOP"></td>
+<td colspan="3"><img height="117" width="256" src="images/spacer.gif" alt=""></td>
+</tr><tr><td rowspan="2"><img src="images/top04.gif" alt="" height="49" width="235"></td>
+<td><a href="http://www.seasar.org/index.html"><img src="images/menu01_b_ja.gif" height="30" width="78" border="0" alt="" id="menu01" onmouseover="swap(1)" onmouseout="restore(1)"></a></td>
+<td><a href="http://www.seasar.org/projects.html"><img src="images/menu02_b_ja.gif" height="30" width="101" border="0" alt="" id="menu02" onmouseover="swap(2)" onmouseout="restore(2)"></a></td>
+<td><a href="http://www.seasar.org/products.html"><img src="images/menu03_b_ja.gif" height="30" width="110" border="0" alt="" id="menu03" onmouseover="swap(3)" onmouseout="restore(3)"></a></td>
+<td><a href="http://www.seasar.org/resources.html"><img src="images/menu04_b_ja.gif" height="30" width="113" border="0" alt="" id="menu04" onmouseover="swap(4)" onmouseout="restore(4)"></a></td>
+<td><img src="images/menu05_b_ja.gif" height="30" width="109" border="0" alt="" id="menu05" onmouseover="swap(5)" onmouseout="restore(5)"></td>
+<td><img height="30" width="34" src="images/menu06.gif" alt=""></td></tr><tr>
+<td colspan="6"><img height="19" width="545" src="images/spacer.gif" alt=""></td></tr></table>
+<table  width="780" border="0" cellspacing="0" cellpadding="0" class="white">
+<tr align="left" valign="top"><td width="14"><img height="14" width="14" src="images/spacer.gif" alt=""></td><td width="740" class="main">
+<!-- don't edit end -->
+<!-- document start -->
+<br>
+<h1><a name="guide">S2XML-RPC 基本的な使い方</a></h1>
+<p>本ドキュメントは<code>S2XML-RPC</code>について記述しています。</p>
+
+<h2><a name="cot">目次</a></h2>
+<ul>
+<li><a href="#webapp">Webアプリケーションの設定</a></li>
+<li><a href="#config-server">サーバ側の設定</a></li>
+<li><a href="#config-client">クライアント側の設定</a></li>
+</ul>
+
+<h2><a name="webapp">Webアプリケーションの設定</a></h2>
+<p>S2XML-RPCを使用するには、S2XmlRpcServletおよびS2を<code>web.xml</code>に設定する必要があります。S2XmlRpcServletはApache XML-RPCのXmlRpcServletを継承したクラスです。XML-RPCのXmlRpcServletおよびS2の設定の詳細はそれぞれのドキュメントを参照してください。</p>
+<p> S2XmlRpcServletは初期化時にS2コンポーネントをS2XmlRpcServletに登録します。そのためには、S2が提供するサーブレットの<code>load-on-startup</code>を指定して、S2XmlRpcServletの<code>load-on-startup</code>は指定しない設定とします。</p>
+<p>以下はS2XML-RPCExamplesに含まれている<code>web.xml</code>です。このサンプルでは、S2の<code>load-on-startup</code>を1、S2XmlRpcServletの<code>load-on-startup</code>を未設定に設定しています。</p>
+<pre style="overflow:auto;height:200">
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"&gt;
+    &lt;filter&gt;
+        &lt;filter-name&gt;s2filter&lt;/filter-name&gt;
+        &lt;filter-class&gt;
+            org.seasar.framework.container.filter.S2ContainerFilter
+        &lt;/filter-class&gt;
+    &lt;/filter&gt;
+
+    &lt;filter-mapping&gt;
+        &lt;filter-name&gt;s2filter&lt;/filter-name&gt;
+        &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+    &lt;/filter-mapping&gt;
+
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;s2servlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;
+            org.seasar.framework.container.servlet.S2ContainerServlet
+        &lt;/servlet-class&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;configPath&lt;/param-name&gt;
+            &lt;param-value&gt;app.dicon&lt;/param-value&gt;
+        &lt;/init-param&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;debug&lt;/param-name&gt;
+            &lt;param-value&gt;false&lt;/param-value&gt;
+        &lt;/init-param&gt;
+        &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
+    &lt;/servlet&gt;
+
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;XmlRpcServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;org.seasar.remoting.xmlrpc.servlet.S2XmlRpcServlet&lt;/servlet-class&gt;
+        &lt;init-param&gt;
+          &lt;param-name&gt;enabledForExtensions&lt;/param-name&gt;
+          &lt;param-value&gt;true&lt;/param-value&gt;
+        &lt;/init-param&gt;
+    &lt;/servlet&gt;
+
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;s2servlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/s2servlet&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;XmlRpcServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/xmlrpc&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+&lt;/web-app&gt;
+</pre>
+
+<h2><a name="config-server">サーバ側の設定</a></h2>
+<h3><code>s2xmlrpc.dicon</code>ファイルのインクルード</h3>
+<p>S2XML-RPCを使用するサーバ側では、<code>app.dicon</code>ファイルの中で<code>s2xmlrpc.dicon</code>ファイルをインクルードします。</p>
+<pre>&lt;components&gt;
+    <strong>&lt;include path=&quot;s2xmlrpc.dicon&quot;/&gt;</strong>
+    ・・・
+&lt;/components&gt;</pre>
+<p><code>s2xmlrpc.dicon</code>は<code>s2xmlrpc-x.x.x.jar</code>の中に含まれているため、ロケーションを気にする必要はありません。</p>
+
+<br>
+<h3>サービスのデプロイ（コンポーネント定義）</h3>
+<p>S2コンテナで管理しているコンポーネントをXML-RPCとして公開（デプロイ）するには、そのコンポーネントの<code>&lt;component&gt;</code>要素の子として<code>&lt;meta&gt;</code>要素を指定します。</p>
+<pre>    &lt;component <strong>name=&quot;Echo&quot;</strong> class=&quot;org.seasar.remoting.xmlrpc.examples.ex01.EchoImpl&quot;&gt;
+        <strong>&lt;meta name=&quot;xmlrpc&quot;/&gt;</strong>
+    &lt;/component&gt;</pre>
+<p><code>&lt;component&gt;</code>要素の<code>name</code>属性（コンポーネント名）は必須です。公開されるURIとメソッド名は次のようになります。</p>
+<dl>
+<dt>URI
+<dd><code><var>context-path</var>/xmlrpc</code>
+<dt>メソッド名
+<dd><code><var>name（コンポーネント名）</var>.<var>コンポーネントのメソッド名</var></code>
+</dl>
+
+<h2><a name="config-client">クライアント側の設定</a></h2>
+<p>S2XML-RPCを使うことで、XML-RPCをコンポーネントとして使用することが出来ます。</p>
+<p>Javaインタフェースを使用してサービスを呼び出すには、diconファイルを次のように記述します。（例：S2XML-RPCExamplesのs2xmlrpc-client.dicon）</p>
+<pre style="overflow-y:auto;height:200">
+<?xml version="1.0" encoding="UTF-8"?>
+&lt;!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+"http://www.seasar.org/dtd/components23.dtd">
+&lt;components>
+    
+    &lt;component name="remoting"
+               class="org.seasar.remoting.common.interceptor.RemotingInterceptor">
+        &lt;property name="connector">connector&lt;/property>
+    &lt;/component>
+    
+    &lt;component name="connector"
+               class="org.seasar.remoting.xmlrpc.connector.XmlRpcConnector">
+        &lt;property name="baseURL">baseURL&lt;/property>
+    &lt;/component>
+                
+    &lt;component name="baseURL" class="java.net.URL" autoBinding="none">
+        &lt;arg>"http://localhost:8080/s2xmlrpc-examples/xmlrpc"&lt;/arg>
+    &lt;/component>
+    
+&lt;/components&gt;
+</pre>
+<p>呼び出すコンポーネントごとにプロキシが必要です。プロキシの<code>&lt;component&gt;</code>要素の<code>class</code>属性にはXML-RPCにマッチするのJavaインタフェースを指定します。このコンポーネントには<code>RemotingInterceptor</code>をアスペクトとして指定します。プロキシはXML－RPCのインタフェースごとに一つの<code>&lt;component&gt;</code>定義が必要です。</p>
+<p><code>RemotingInterceptor</code>はプロキシのメソッド呼び出しを横取りし、XML-RPCコネクタを呼び出します。上の例では、S2の自動バインディングによりRemotingInterceptorのプロパティにAxisコネクタが設定されています。RemotingInterceptorは、XML-RPCコネクタごとに一つの<code>&lt;component&gt;</code>定義が必要です。</p>
+<p>XML-RPCコネクタはXML-RPCを呼び出します。baseURLプロパティには、XML-RPCのURLを指定します。XML-RPCコネクタはXML-RPCのURIごとに一つの<code>&lt;component&gt;</code>定義が必要です。</p>
+<!-- document end -->
+<!-- don't edit start -->
+</td>
+<td width="14"><img height="14" width="14" src="images/spacer.gif" alt=""></td>
+</tr><tr>
+<td width="14"><img height="30" width="14" src="images/spacer.gif" alt=""></td>
+<td width="766"><img height="30" width="592" src="images/spacer.gif" alt=""></td>
+</tr><tr>
+<td width="14"><img height="14" width="14" src="images/spacer.gif" alt=""></td>
+<td width="766" class="copyright">&copy; Copyright The Seasar Foundation and the others 2004, all rights reserved.</td>
+</tr></table>
+<td class="backright" align="left" valign="top">&nbsp;</td></tr><tr>
+<td class="backunder" align="left"  valign="top" width="780" height="16">&nbsp;</td>
+<td class="backcorner" align="left" valign="top" height="16">&nbsp;</td>
+</tr></table></body>
+<!-- don't edit end -->
+</html>

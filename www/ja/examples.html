@@ -1,0 +1,208 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!-- don't edit start -->
+<head>
+<title>Seasar - DI Container with AOP - </title>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<link href="seasar_b.css" type="text/css" rel="stylesheet" media="screen">
+<link href="seasar_p.css" type="text/css" rel="stylesheet" media="print">
+<script src="seasar_b.js" type="text/JavaScript" language="JavaScript"></script>
+<style type="text/css">
+<!--
+.style1 {color: #FF0000}
+-->
+</style>
+</head><body onload="preload('ja')"><table width="100%" border="0" cellspacing="0" cellpadding="0" align="left"><tr>
+<td align="left" valign="top" width="780"><table width="780" border="0" cellspacing="0" cellpadding="0" class="white">
+<tr><td colspan="7"><img height="5" width="780" src="images/top01_b.gif" alt=""></td></tr>
+<tr><td><img height="117" width="235" src="images/top02_b.gif" alt="Seasar"></td>
+<td colspan="3"><img height="117" width="289" src="images/top03.gif" alt="DI Container with AOP"></td>
+<td colspan="3"><img height="117" width="256" src="images/spacer.gif" alt=""></td>
+</tr><tr><td rowspan="2"><img src="images/top04.gif" alt="" height="49" width="235"></td>
+<td><a href="http://www.seasar.org/index.html"><img src="images/menu01_b_ja.gif" height="30" width="78" border="0" alt="" id="menu01" onmouseover="swap(1)" onmouseout="restore(1)"></a></td>
+<td><a href="http://www.seasar.org/projects.html"><img src="images/menu02_b_ja.gif" height="30" width="101" border="0" alt="" id="menu02" onmouseover="swap(2)" onmouseout="restore(2)"></a></td>
+<td><a href="http://www.seasar.org/products.html"><img src="images/menu03_b_ja.gif" height="30" width="110" border="0" alt="" id="menu03" onmouseover="swap(3)" onmouseout="restore(3)"></a></td>
+<td><a href="http://www.seasar.org/resources.html"><img src="images/menu04_b_ja.gif" height="30" width="113" border="0" alt="" id="menu04" onmouseover="swap(4)" onmouseout="restore(4)"></a></td>
+<td><img src="images/menu05_b_ja.gif" height="30" width="109" border="0" alt="" id="menu05" onmouseover="swap(5)" onmouseout="restore(5)"></td>
+<td><img height="30" width="34" src="images/menu06.gif" alt=""></td></tr><tr>
+<td colspan="6"><img height="19" width="545" src="images/spacer.gif" alt=""></td></tr></table>
+<table  width="780" border="0" cellspacing="0" cellpadding="0" class="white">
+<tr align="left" valign="top"><td width="14"><img height="14" width="14" src="images/spacer.gif" alt=""></td><td width="740" class="main">
+<!-- don't edit end -->
+<!-- document start -->
+<br>
+<h1><a name="examples">S2XML-RPC サンプル</a></h1>
+<p>本ドキュメントは<code>S2XML-RPC</code>について記述しています。</p>
+
+<h2><a name="cot">目次</a></h2>
+<ul>
+<li><a href="#abstraction">概要</a></li>
+<li><a href="#ex01">コンポーネントをXML-RPCとして公開する</a></li>
+<li><a href="#ex02">実装ではなくインタフェースを公開する</a></li>
+<li><a href="#ex03">引数／戻り値としてBeanを使用する</a></li>
+</ul>
+
+<h2><a name="abstraction">概要</a></h2>
+<p>S2XML-RPCExamplesは、S2XML-RPCの基本的な機能を一通り使用したサンプルです。インストールについては<a href="setup.html">セットアップ</a>を参照してください。</p>
+<p>ソースはサーバ側とクライアント側に分かれており、クライアント側はJUnit (S2Unit) のテストケースとして作成されています。それぞれ、以下のソースフォルダにあります。</p>
+<dl>
+<dt>サーバ側
+<dd><code>src/java</code>フォルダの<code>org.seasar.xmlrpc.examples</code> パッケージ
+<dt>クライアント側
+<dd><code>src/tsst</code>フォルダの<code>org.seasar.xmlrpc.examples</code> パッケージ
+</dl>
+
+<p>クライアント側では、リモート呼び出しの設定を、以下のdiconファイルで共通化しています。</p>
+<h5>s2xmlrpc-client.dicon</h5>
+<pre style="overflow-y:auto;height:200">
+&lt;?xml version="1.0" encoding="UTF-8"?>
+&lt;!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
+"http://www.seasar.org/dtd/components23.dtd"&gt;
+&lt;components&gt;
+    
+    &lt;component name="remoting"
+               class="org.seasar.remoting.common.interceptor.RemotingInterceptor"&gt;
+        &lt;property name="connector"&gt;connector&lt;/property&gt;
+    &lt;/component&gt;
+    
+    &lt;component name="connector"
+               class="org.seasar.remoting.xmlrpc.connector.XmlRpcConnector"&gt;
+        &lt;property name="baseURL"&gt;baseURL&lt;/property&gt;
+    &lt;/component&gt;
+                
+    &lt;component name="baseURL" class="java.net.URL" autoBinding="none"&gt;
+        &lt;arg&gt;"http://localhost:8080/s2xmlrpc-examples/xmlrpc"&lt;/arg&gt;
+    &lt;/component&gt;
+    
+&lt;/components&gt;
+</pre>
+
+<h2><a name="ex01">コンポーネントをXML-RPCとして公開する</a></h2>
+<p>POJOのクラスをXML-RPCとして公開することが可能です。</p>
+<p>その際、以下の制限があります。</p>
+<ul>
+<li>公開するメソッドは戻り値なし（void）は使用できません。（XML-RPCの仕様の制限）</li>
+<li>日付時刻クラス（java.util.Dateなど）はミリ秒以下が切り捨てられます。(XML-RPCの仕様の制限)</li>
+<li>BeanはXML-RPCのプロトコルではMapにマッピングされます。</li>
+</ul>
+
+<h3><a name="ex01-Echo">Echoサンプル</a></h3>
+<h5>サービスとして公開するクラス</h5>
+<pre>
+public interface Echo {
+    String echo(int id, String message);
+}
+
+public class EchoImpl implements Echo {
+    public String echo(int id, String message) {
+        return &quot;[id = &quot; + id + &quot;] &quot; + message;
+    }
+}
+</pre>
+
+<h5>dicon（サービス側）</h5>
+<pre>
+&lt;component name=&quot;Echo&quot; class=&quot;org.seasar.remoting.xmlrpc.examples.ex01.EchoImpl&quot;&gt;
+    &lt;meta name=&quot;xmlrpc&quot;/&gt;
+&lt;/component&gt;
+</pre>
+
+<h5>dicon（クライアント側）</h5>
+<pre>
+&lt;include path="s2xmlrpc-client.dicon"/&gt;
+&lt;component class="org.seasar.remoting.xmlrpc.examples.ex01.Echo"&gt;
+    &lt;aspect&gt;remoting&lt;/aspect&gt;
+&lt;/component&gt;
+</pre>
+
+<h3><a name="ex01-Ping">Pingサンプル</a></h3>
+<h5>サービスとして公開するクラス</h5>
+<pre>
+public interface Ping {
+    boolean ping(String message);
+}
+
+public class PingImpl implements Ping {
+    public void ping(String message) {
+        System.out.println(message);
+        return true;
+    }
+}
+
+</pre>
+
+<h5>dicon（サービス側）</h5>
+<pre>
+&lt;component name=&quot;Ping&quot; class=&quot;org.seasar.remoting.xmlrpc.examples.ex01.PingImpl&quot;&gt;
+    &lt;meta name=&quot;xmlrpc&quot;/&gt;
+&lt;/component&gt;
+</pre>
+
+<h5>dicon（クライアント側）</h5>
+<pre>
+&lt;include path="s2xmlrpc-client.dicon"/&gt;
+&lt;component class="org.seasar.remoting.xmlrpc.examples.ex01.Ping"&gt;
+    &lt;aspect&gt;remoting&lt;/aspect&gt;
+&lt;/component&gt;
+</pre>
+
+<h2><a name="ex02">特定のインタフェースを公開する（S2XML-RPC V0.3.0では未実装の機能です）</a></h2>
+<p>実装クラスを公開すると、不要なメソッドまで公開されてる場合があります(インタフェースを実装していない場合や複数のインタフェースを実装している場合など)。実装クラス<code>HelloImpl</code>は二つのインタフェースを実装していますが、MessageSettableのメソッド<code>setMessage(String)</code>はXML-RPCとして公開しないものとします。<br>
+このような場合には、公開するJavaインタフェースを指定します(実装したインタフェースが一つだけの場合や、実装した複数のインタフェースのメソッドを全て公開する場合には明示的に指定する必要はありません)。</p>
+<pre>
+&lt;component name="Hello" class="org.seasar.remoting.xmlrpc.examples.ex02.impl.HelloImpl"&gt;
+    &lt;meta name="xmlrpc"&gt;
+        <strong>&lt;component class="org.seasar.remoting.xmlrpc.ServiceDef"&gt;</strong>
+            <strong>&lt;property name="serviceType"&gt;@org.seasar.remoting.xmlrpc.examples.ex02.Hello@class&lt;/property&gt;</strong>
+        <strong>&lt;/component&gt;</strong>
+    &lt;/meta&gt;
+    &lt;property name="message"&gt;"Hello"&lt;/property&gt;
+&lt;/component&gt;
+</pre>
+
+<h2><a name="ex03">引数／戻り値としてBeanを使用する</a></h2>
+<p>このサンプルでは、サービスは引数および戻り値の型としてJavaBeansを使用しています。プリミティブ型（およびそのラッパクラス型）を使用している場合は、特に何も指定しなくても動作します。</p>
+
+<pre>
+public interface BeanEcho {
+    EchoDto echo(EchoDto echoDto);
+}
+
+public class BeanEchoImpl implements BeanEcho {
+    public BeanEchoImpl() {}
+    public EchoDto echo(EchoDto echoDto) {
+        return echoDto;
+    }
+}
+
+public class EchoDto {
+    private String  strParam    = "";
+    private short   shortParam  = 1;
+    private int     intParam    = 2;
+    private long    longParam   = 3L;
+    private float   floatParam  = 1.0f;
+    private double  doubleParam = 1.1;
+    private boolean boolParam   = true;
+    
+	// setter/getter
+}
+</pre>
+
+<!-- document end -->
+<!-- don't edit start -->
+</td>
+  <td width="14"><img height="14" width="14" src="images/spacer.gif" alt=""></td>
+</tr><tr>
+<td width="14"><img height="30" width="14" src="images/spacer.gif" alt=""></td>
+<td width="766"><img height="30" width="592" src="images/spacer.gif" alt=""></td>
+</tr><tr>
+<td width="14"><img height="14" width="14" src="images/spacer.gif" alt=""></td>
+<td width="766" class="copyright">&copy; Copyright The Seasar Foundation and the others 2004, all rights reserved.</td>
+</tr></table>
+<td class="backright" align="left" valign="top">&nbsp;</td></tr><tr>
+<td class="backunder" align="left"  valign="top" width="780" height="16">&nbsp;</td>
+<td class="backcorner" align="left" valign="top" height="16">&nbsp;</td>
+</tr></table></body>
+<!-- don't edit end -->
+</html>
