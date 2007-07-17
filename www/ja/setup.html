@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!-- don't edit start -->
+<head>
+<title>Seasar - DI Container with AOP - </title>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<link href="../seasar_b.css" type="text/css" rel="stylesheet" media="screen">
+<link href="../seasar_p.css" type="text/css" rel="stylesheet" media="print">
+<script src="../seasar_b.js" type="text/JavaScript" language="JavaScript"></script>
+</head><body onload="preload('ja')"><table width="100%" border="0" cellspacing="0" cellpadding="0" align="left"><tr>
+<td align="left" valign="top" width="780"><table width="780" border="0" cellspacing="0" cellpadding="0" class="white">
+<tr><td colspan="7"><img height="5" width="780" src="../images/top01_b.gif" alt=""></td></tr>
+<tr><td><img height="117" width="235" src="../images/top02_b.gif" alt="Seasar"></td>
+<td colspan="3"><img height="117" width="289" src="../images/top03.gif" alt="DI Container with AOP"></td>
+<td colspan="3"><img height="117" width="256" src="../images/spacer.gif" alt=""></td>
+</tr><tr><td rowspan="2"><img src="../images/top04.gif" alt="" height="49" width="235"></td>
+<td><a href="http://www.seasar.org/index.html"><img src="../images/menu01_b_ja.gif" height="30" width="78" border="0" alt="" id="menu01" onmouseover="swap(1)" onmouseout="restore(1)"></a></td>
+<td><a href="http://www.seasar.org/projects.html"><img src="../images/menu02_b_ja.gif" height="30" width="101" border="0" alt="" id="menu02" onmouseover="swap(2)" onmouseout="restore(2)"></a></td>
+<td><a href="http://www.seasar.org/products.html"><img src="../images/menu03_b_ja.gif" height="30" width="110" border="0" alt="" id="menu03" onmouseover="swap(3)" onmouseout="restore(3)"></a></td>
+<td><a href="http://www.seasar.org/resources.html"><img src="../images/menu04_b_ja.gif" height="30" width="113" border="0" alt="" id="menu04" onmouseover="swap(4)" onmouseout="restore(4)"></a></td>
+<td><img src="../images/menu05_b_ja.gif" height="30" width="109" border="0" alt="" id="menu05" onmouseover="swap(5)" onmouseout="restore(5)"></td>
+<td><img height="30" width="34" src="../images/menu06.gif" alt=""></td></tr><tr>
+<td colspan="6"><img height="19" width="545" src="../images/spacer.gif" alt=""></td></tr></table>
+<table  width="780" border="0" cellspacing="0" cellpadding="0" class="white">
+<tr align="left" valign="top"><td width="14"><img height="14" width="14" src="../images/spacer.gif" alt=""></td><td width="740" class="main">
+<!-- don't edit end -->
+<!-- document start -->
+<br>
+<h1><a name="setup">S2XML-RPC セットアップ</a></h1>
+<p>本ドキュメントは<code>S2XML-RPC-V0.3.0</code>について記述しています．旧バージョンについては該当バージョンの配布ファイルに含まれているドキュメントを参照してください．</p>
+<h2><a name="cot">目次</a></h2>
+<ul>
+<li><a href="#requirement">前提条件</a>
+<li><a href="#downlod">ダウンロード</a>
+<li><a href="#install">インストール</a>
+<li><a href="#confirm">サンプルの確認</a>
+</ul>
+</ul>
+<h2><a name="requirement">前提条件</a></h2>
+<p>S2XML-RPCはS2，S2Remoting，Apache XML-RPCに依存します．対応するバージョンは以下の通りです．</p>
+<table border="1">
+<col span="4" width="150">
+<thead>
+<tr>
+<th>S2XML-RPC</th>
+<th>S2</th>
+<th>S2Remoting</th>
+<th>Apache XML-RPC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.3.0</td>
+<td>2.1.3～</td>
+<td>0.0.7～</td>
+<td>3.0～</td>
+</tr>
+</tbody>
+</table>
+<p>上記のバージョンの組み合わせを全て動作確認しているわけではありません．動作確認しているバージョンの組み合わせについては以下に記述してあります．</p>
+<h3>実行環境</h3>
+<p>S2XML-RPCを実行するには，以下のものが必要です．</p>
+<ul>
+<li>JDK (J2SE SDK) 1.4以降が必要です．S2XML-RPCV0.3.0の開発とテストはJDK 1.5.0_07(MacOS X)で行っています．ダウンロードは<a href="http://java.sun.com/j2se/1.4.2/ja/download.html">こちら</a>．
+<li>S2の2.1.3以降が必要です (J2SE5.0ではS2.2以降が必要です)．S2XML-RPC-V0.3.0の開発とテストはS2.4.15で行っています．ダウンロードは<a href="http://s2container.seasar.org/ja/">こちら</a>．
+<li>S2Remotingの0.0.7以降が必要です．S2XML-RPC-V0.3.0の開発とテストはS2Remoting-V1.1.0で行っています．ダウンロードは<a href="http://s2remoting.seasar.org/ja/">こちら</a>．
+<li>Apache XML-RPCの3.0以降が必要です．S2XML-RPC-V0.0.3の開発とテストはApache XML-RPC 3.0で行っています
+(S2XML-RPCにはApache XML-RPCが同梱されています)．ダウンロードは<a href="http://ws.apache.org/xmlrpc/">こちら</a>．
+<li>Servlet2.3以降をサポートしたWebコンテナが必要です．S2XML-RPC-V0.3.0の開発とテストは，Tomcat
+5.5.20で行っています．ダウンロードは<a href="http://jakarta.apache.org/site/binindex.cgi">こちら</a>．
+</ul>
+<h3>開発環境</h3>
+<p>S2XML-RPCのディストリビューションは，他のS2関連プロダクトの多くと同様，Eclipse
+Javaプロジェクトをアーカイブしたものとなっています．</p>
+<ul>
+<li>Eclipse3.3以降が必要です．S2XML-RPC-V0.3.0の開発とテストは，Eclipse3.3.0で行っています．ダウンロードは<a href="http://www.eclipse.org/downloads/index.php">こちら</a>．
+<li>S2の2.1.3以降が必要です (J2SE5.0ではS2.2以降が必要です)．S2XML-RPC-V0.3.0の開発とテストはS2.4.15で行っています．ダウンロードは<a href="http://s2container.seasar.org/ja/">こちら</a>．ダウンロード後，ワークスペースにインポートしてください．
+<li>S2Remotingの0.0.7以降が必要です．S2XML-RPC-V0.3.0の開発とテストはS2Remoting
+1.1.0で行っています．ダウンロードは<a href="http://s2remoting.seasar.org/ja/">こちら</a>．ダウンロード後，ワークスペースにインポートしてください．
+</ul>
+<p>S2XML-RPCExamples-0.3.0のディストリビューションは，WTPプラグインを使用したWTPプロジェクトをアーカイブしたものとなっています．</p>
+<ul>
+<li>WTPプラグインが必要です．S2AxisExamples-V0.3.0の開発とテストは，WTP2.0で行っています．
+</ul>
+<h2><a name="downlod">ダウンロード</a></h2>
+<p>S2XML-RPCおよびS2XML-RPCExamplesは<a href="http://s2xmlrpc.sandbox.seasar.org/ja/">こちら</a>からダウンロードすることが出来ます．</p>
+<h2><a name="install">インストール</a></h2>
+<h3>S2XML-RPC</h3>
+<ul>
+<li>ダウンロードした<code>S2XML-RPC-V0.3.0.zip</code>ファイルを適当なディレクトリに解凍してください．
+<li>Eclipseを起動し，「ファイル」－「インポート」メニューを選択してください．
+<li>「インポート」ウィザードで「既存プロジェクトをワークスペースへ」を選択し，「次へ」をクリックしてください．
+<li>「参照」ボタンをクリックし，先に解凍したディレクトリに出来ている<code>s2xmlrpc</code>ディレクトリを選択し，「OK」ボタンをクリックします．
+<li>「終了」ボタンをクリックします．
+</ul>
+<h3>S2XML-RPCExamples</h3>
+<ul>
+<li>ダウンロードした<code>S2XML-RPCExamples-V0.3.0.zip</code>ファイルを適当なディレクトリに解凍してください．
+<li>Eclipseを起動し，「ファイル」－「インポート」メニューを選択してください．
+<li>「インポート」ウィザードで「既存プロジェクトをワークスペースへ」を選択し，「次へ」をクリックしてください．
+<li>「参照」ボタンをクリックし，先に解凍したディレクトリに出来ている<code>s2xmlrpc-examples</code>ディレクトリを選択し，「OK」ボタンをクリックします．
+<li>「終了」ボタンをクリックします．
+</ul>
+<h2><a name="confirm">サンプルの確認</a></h2>
+<p>インストールの確認のために，サンプルを実行してください．</p>
+<ul>
+<li>s2xmlrpc-examplesプロジェクトをWTPからTomcatで起動します。
+<li>ブラウザで以下のアドレスにアクセスしします(ホスト名やポート番号はお使いの環境に合わせてください)．
+</ul>
+<blockquote><a href="http://localhost:8080/s2xmlrpc-examples/xmlrpc">http://localhost:8080/s2xmlrpc-examples/xmlrpc</a></blockquote>
+<ul>
+<li>次のように「HTTPステータス 405」画面が表示されればセットアップは成功です．
+</ul>
+<blockquote>HTTPステータス 405 - HTTPのGETメソッドは、このURLではサポートされていません。</blockquote>
+<p>エラーが表示された場合には，Webコンテナの設定に問題があるかもしれません．エラーメッセージの内容を確認してください．</p>
+<!-- document end -->
+<!-- don't edit start -->
+</td>
+<td width="14"><img height="14" width="14" src="../images/spacer.gif" alt=""></td>
+</tr><tr>
+<td width="14"><img height="30" width="14" src="../images/spacer.gif" alt=""></td>
+<td width="766"><img height="30" width="592" src="../images/spacer.gif" alt=""></td>
+</tr><tr>
+<td width="14"><img height="14" width="14" src="../images/spacer.gif" alt=""></td>
+<td width="766" class="copyright">&copy; Copyright The Seasar Foundation and the others 2004-2007, all rights reserved.</td>
+</tr></table>
+<td class="backright" align="left" valign="top">&nbsp;</td></tr><tr>
+<td class="backunder" align="left"  valign="top" width="780" height="16">&nbsp;</td>
+<td class="backcorner" align="left" valign="top" height="16">&nbsp;</td>
+</tr></table></body>
+<!-- don't edit end -->
+</html>
