@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="S2Axis2" default="dist" basedir=".">
+  <property name="ver" value="0.3.0"/>
+
+  <target name="dist">
+    <zip zipfile="target/S2XML-RPC-${ver}.zip">
+      <zipfileset prefix="s2xmlrpc" dir=".">
+        <exclude name="**/target/**"/>
+        <exclude name=".settings"/>
+        <exclude name=".settings/**"/>
+      </zipfileset>
+      <zipfileset prefix="s2xmlrpc/lib" dir="target">
+        <include name="s2xmlrpc-${ver}.jar"/>
+      </zipfileset>
+      <zipfileset prefix="s2xmlrpc/resources" dir="src/test/resources">
+        <include name="log4j.properties"/>
+      </zipfileset>
+      <zipfileset prefix="s2xmlrpc/doc" dir="../s2xmlrpc-www">
+        <exclude name="**/download/**"/>
+        <exclude name=".project"/>
+      </zipfileset>
+    </zip>
+  </target>
+
+  <target name="jar">
+    <jar destfile="target/s2xmlrpc-${ver}.jar"
+      basedir="target/classes"
+      excludes="**/*Test.class"/>
+    <!--
+    <jar destfile="target/axis2-patch.jar"
+      basedir="target/classes"
+      includes="**/org/apache/axis2/**"/>
+    -->
+  </target>
+
+</project>
+
