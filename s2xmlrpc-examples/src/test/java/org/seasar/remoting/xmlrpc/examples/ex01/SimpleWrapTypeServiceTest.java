@@ -171,20 +171,20 @@ public class SimpleWrapTypeServiceTest extends S2TestCase {
         Object[] actual = this.service.getArrayParam();
         assertEquals(0, actual.length);
     }
-//    FIXME Stringの配列対応 
-//    public void testArrayString() {
-//        int size = 3;
-//        String[] expected = new String[size];
-//        for (int i = 0; i < size; i++) {
-//            expected[i] = "array" + i;
-//        }
-//
-//        this.service.setArrayStringParam(expected);
-//        String[] actual = this.service.getArrayStringParam();
-//        for (int i = 0; i < size; i++) {
-//            assertEquals(expected[i], actual[i]);
-//        }
-//    }
+
+    public void testArrayString() {
+        int size = 3;
+        String[] expected = new String[size];
+        for (int i = 0; i < size; i++) {
+            expected[i] = "array" + i;
+        }
+
+        this.service.setArrayStringParam(expected);
+        String[] actual = this.service.getArrayStringParam();
+        for (int i = 0; i < size; i++) {
+            assertEquals(expected[i], actual[i]);
+        }
+    }
 
     public void testArrayString_Null() {
         this.service.setArrayStringParam(null);
@@ -192,10 +192,9 @@ public class SimpleWrapTypeServiceTest extends S2TestCase {
         assertNull(actual);
     }
 
-//  FIXME Stringの配列対応 
-//    public void testArrayString_Size0() {
-//        this.service.setArrayStringParam(new String[0]);
-//        String[] actual = this.service.getArrayStringParam();
-//        assertEquals(0, actual.length);
-//    }
+    public void testArrayString_Size0() {
+        this.service.setArrayStringParam(new String[0]);
+        String[] actual = this.service.getArrayStringParam();
+        assertEquals(0, actual.length);
+    }
 }
