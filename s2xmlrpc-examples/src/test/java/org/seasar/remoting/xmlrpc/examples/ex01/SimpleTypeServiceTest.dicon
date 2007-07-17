@@ -5,6 +5,6 @@
 	<include path="s2xmlrpc-client.dicon"/>
 
     <component class="org.seasar.remoting.xmlrpc.examples.ex01.SimpleTypeService">
-		<aspect>ioRemoting</aspect>
+		<aspect>remoting</aspect>
 	</component>
 </components>

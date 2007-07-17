@@ -3,12 +3,12 @@
 "http://www.seasar.org/dtd/components23.dtd">
 <components>
     
-    <component name="ioRemoting"
+    <component name="remoting"
                class="org.seasar.remoting.common.interceptor.RemotingInterceptor">
-        <property name="connector">ioConnector</property>
+        <property name="connector">connector</property>
     </component>
     
-    <component name="ioConnector"
+    <component name="connector"
                class="org.seasar.remoting.xmlrpc.connector.XmlRpcConnector">
         <property name="baseURL">baseURL</property>
     </component>
