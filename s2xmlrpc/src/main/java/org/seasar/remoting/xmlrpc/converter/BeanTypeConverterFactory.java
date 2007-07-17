@@ -18,7 +18,6 @@ package org.seasar.remoting.xmlrpc.converter;
 import org.apache.xmlrpc.common.TypeConverter;
 import org.apache.xmlrpc.common.TypeConverterFactoryImpl;
 
-
 /**
  * TODO BeanConverterのキャッシュ化
  * @author agata
@@ -27,12 +26,17 @@ public class BeanTypeConverterFactory extends TypeConverterFactoryImpl {
 
 	private static BeanTypeConverterFactory instance = new BeanTypeConverterFactory();
 
-	private BeanTypeConverterFactory() {}
+    private static final TypeConverter objectArrayTypeConverter = new StringArrayConverter();
+
+    private BeanTypeConverterFactory() {}
 	
 	public TypeConverter getTypeConverter(Class class1) {
 		TypeConverter converter;
 		try {
-			converter = super.getTypeConverter(class1);		
+	        if (class1.isAssignableFrom(String[].class)) {
+	            return objectArrayTypeConverter;
+	        }
+			converter = super.getTypeConverter(class1);
 		} catch (IllegalStateException e) {
 			if (class1 == void.class) {
 				throw e;

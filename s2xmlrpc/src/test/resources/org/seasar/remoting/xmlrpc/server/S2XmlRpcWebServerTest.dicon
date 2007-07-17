@@ -9,4 +9,7 @@
     <component name="Echo" class="org.seasar.remoting.xmlrpc.test.service.impl.EchoImpl">
     	<meta name="xmlrpc"/>
     </component>
+    <component name="StringArrayService" class="org.seasar.remoting.xmlrpc.test.service.impl.StringArrayServiceImpl">
+    	<meta name="xmlrpc"/>
+    </component>
 </components>

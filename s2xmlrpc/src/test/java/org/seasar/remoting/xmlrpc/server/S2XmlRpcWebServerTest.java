@@ -27,11 +27,13 @@ import org.seasar.remoting.xmlrpc.factory.BeanTypeFactory;
 import org.seasar.remoting.xmlrpc.test.entity.Employee;
 import org.seasar.remoting.xmlrpc.test.service.Echo;
 import org.seasar.remoting.xmlrpc.test.service.EmployeeService;
+import org.seasar.remoting.xmlrpc.test.service.StringArrayService;
 
 public class S2XmlRpcWebServerTest extends S2TestCase {
 	private EmployeeService employeeService;
 	private Echo echo;
 	private S2XmlRpcWebServer xmlRpcWebServer;
+	private StringArrayService stringArrayService;
 
 	protected void setUp() throws Exception {
 		include("S2XmlRpcWebServerTest.dicon");
@@ -48,6 +50,7 @@ public class S2XmlRpcWebServerTest extends S2TestCase {
         S2XmlRpcClientFactory factory = new S2XmlRpcClientFactory(client, BeanTypeConverterFactory.getFactory());
         employeeService = (EmployeeService) factory.newInstance(EmployeeService.class, "EmployeeService");   
         echo = (Echo) factory.newInstance(Echo.class, "Echo");   
+    	stringArrayService = (StringArrayService) factory.newInstance(StringArrayService.class, "StringArrayService");   
 	}
 	
 	protected void tearDown() throws Exception {
@@ -84,4 +87,11 @@ public class S2XmlRpcWebServerTest extends S2TestCase {
     public void testEcho() throws Throwable {
 		assertEquals("[id = 1] test", echo.echo(1, "test"));
 	}
+
+    public void testStringArrayServiceEcho() throws Exception {
+    	String[] actual = stringArrayService.echo(new String[] {"one", "two"});
+    	assertEquals(2, actual.length);
+    	assertEquals("one", actual[0]);
+    	assertEquals("two", actual[1]);
+    }
 }

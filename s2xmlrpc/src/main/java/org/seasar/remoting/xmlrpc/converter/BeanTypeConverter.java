@@ -72,7 +72,7 @@ public class BeanTypeConverter implements TypeConverter {
 	}
 
 	public Object backConvert(Object pObject) {
-		return pObject;
+    	throw new UnsupportedOperationException();
 	}
 	
     public static void copyProperties(Map src, Object dest) {
