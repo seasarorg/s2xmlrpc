@@ -4,12 +4,12 @@
   <groupId>org.seasar.xmlrpc</groupId>
   <artifactId>s2xmlrpc-examples</artifactId>
   <packaging>war</packaging>
-  <version>0.3.0-SNAPSHOT</version>
+  <version>0.3.0</version>
   <dependencies>
     <dependency>
       <groupId>org.seasar.xmlrpc</groupId>
       <artifactId>s2xmlrpc</artifactId>
-      <version>0.3.0-SNAPSHOT</version>
+      <version>0.3.0</version>
     </dependency>
   </dependencies>
 </project>

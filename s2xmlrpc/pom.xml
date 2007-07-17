@@ -9,7 +9,7 @@
   <artifactId>s2xmlrpc</artifactId>
   <packaging>jar</packaging>
   <name>S2XML-RPC Project</name>
-  <version>0.3.0-SNAPSHOT</version>
+  <version>0.3.0</version>
   <description></description>
   <url>http://sandbox.s2xmlrpc.seasar.org/</url>
   <issueManagement>
@@ -125,6 +125,35 @@
           </execution>
         </executions>
         -->
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <configuration>
+          <locales>en</locales>
+          <encoding>UTF-8</encoding>
+          <inputEncoding>UTF-8</inputEncoding>
+          <outputEncoding>UTF-8</outputEncoding>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>ant-dist</id>
+            <phase>site</phase>
+            <configuration>
+              <tasks>
+                <ant antfile="build.xml" target="dist">
+                  <property name="ver" value="${version}"/>
+                </ant>
+              </tasks>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
     <extensions>
