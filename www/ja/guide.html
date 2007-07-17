@@ -141,7 +141,7 @@
 &lt;/components&gt;
 </pre>
 <p>呼び出すコンポーネントごとにプロキシが必要です。プロキシの<code>&lt;component&gt;</code>要素の<code>class</code>属性にはXML-RPCにマッチするのJavaインタフェースを指定します。このコンポーネントには<code>RemotingInterceptor</code>をアスペクトとして指定します。プロキシはXML－RPCのインタフェースごとに一つの<code>&lt;component&gt;</code>定義が必要です。</p>
-<p><code>RemotingInterceptor</code>はプロキシのメソッド呼び出しを横取りし、XML-RPCコネクタを呼び出します。上の例では、S2の自動バインディングによりRemotingInterceptorのプロパティにAxisコネクタが設定されています。RemotingInterceptorは、XML-RPCコネクタごとに一つの<code>&lt;component&gt;</code>定義が必要です。</p>
+<p><code>RemotingInterceptor</code>はプロキシのメソッド呼び出しを横取りし、XML-RPCコネクタを呼び出します。上の例では、S2の自動バインディングによりRemotingInterceptorのプロパティにXML-RPCコネクタが設定されています。RemotingInterceptorは、XML-RPCコネクタごとに一つの<code>&lt;component&gt;</code>定義が必要です。</p>
 <p>XML-RPCコネクタはXML-RPCを呼び出します。baseURLプロパティには、XML-RPCのURLを指定します。XML-RPCコネクタはXML-RPCのURIごとに一つの<code>&lt;component&gt;</code>定義が必要です。</p>
 <!-- document end -->
 <!-- don't edit start -->
