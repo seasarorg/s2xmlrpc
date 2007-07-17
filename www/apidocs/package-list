@@ -1,0 +1,10 @@
+org.seasar.remoting.xmlrpc
+org.seasar.remoting.xmlrpc.client
+org.seasar.remoting.xmlrpc.connector
+org.seasar.remoting.xmlrpc.converter
+org.seasar.remoting.xmlrpc.deployer
+org.seasar.remoting.xmlrpc.factory
+org.seasar.remoting.xmlrpc.serializer
+org.seasar.remoting.xmlrpc.server
+org.seasar.remoting.xmlrpc.servlet
+org.seasar.remoting.xmlrpc.util
