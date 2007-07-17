@@ -23,7 +23,7 @@
 	    <zipfileset prefix="s2xmlrpc/doc/apidocs" dir="target/site/apidocs">
 	    </zipfileset>
     </zip>
-  	<copydir dest="../s2xmlrpc-www" src="target/site/apidocs"></copydir>
+  	<copydir dest="../s2xmlrpc-www/apidocs" src="target/site/apidocs"></copydir>
   </target>
 
   <target name="jar">
