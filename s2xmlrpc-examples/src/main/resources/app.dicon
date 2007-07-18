@@ -6,4 +6,5 @@
     <include path="org/seasar/remoting/xmlrpc/examples/ex01/deploy.dicon"/>
     <include path="org/seasar/remoting/xmlrpc/examples/ex02/deploy.dicon"/>
     <include path="org/seasar/remoting/xmlrpc/examples/ex03/deploy.dicon"/>
+    <include path="org/seasar/remoting/xmlrpc/examples/ex04/deploy.dicon"/>
 </components>

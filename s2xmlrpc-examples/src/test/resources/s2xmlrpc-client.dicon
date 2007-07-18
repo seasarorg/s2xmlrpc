@@ -14,7 +14,7 @@
     </component>
                 
     <component name="baseURL" class="java.net.URL" autoBinding="none">
-        <arg>"http://localhost:8080/s2xmlrpc-examples/xmlrpc"</arg>
+        <arg>"http://localhost:8081/s2xmlrpc-examples/xmlrpc"</arg>
     </component>
     
 </components>
