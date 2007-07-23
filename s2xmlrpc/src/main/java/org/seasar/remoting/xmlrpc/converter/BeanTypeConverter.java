@@ -26,76 +26,102 @@ import org.seasar.framework.beans.factory.BeanDescFactory;
 import org.seasar.framework.util.ClassUtil;
 import org.seasar.remoting.xmlrpc.S2XmlRpcException;
 
+/**
+ * Beanに対応したコンバータクラスです。
+ * MapをBeanに変換します。
+ * @author agata
+ */
 public class BeanTypeConverter implements TypeConverter {
-
+	/**
+	 * 対象のBeanクラス
+	 */
 	private final Class target;
 
-	BeanTypeConverter(Class target) {
+	/**
+	 * コンストラクタ
+	 * @param target 対象のBeanクラス
+	 */
+	BeanTypeConverter(final Class target) {
 		this.target = target;
 	}
 
-	public boolean isConvertable(Object pObject) {
-		return pObject == null || pObject instanceof Map;
+	/**
+	 * 変換可能か？
+	 * @param object 変換元のオブジェクト
+	 * @return 変換可能ならtrue
+	 */
+	public boolean isConvertable(final Object object) {
+		return object == null || object instanceof Map;
 	}
 
-	public Object convert(Object pObject) {
-		if (pObject == null) {
+	/**
+	 * オブジェクトを変換します。
+	 * @param object 変換元
+	 * @return 変換後のオブジェクト
+	 */
+	public Object convert(final Object object) {
+		if (object == null) {
 			return null;
 		}
 		if (target.isArray()) {
-			Object[] mapArray = pObject.getClass().isArray() ? (Object[]) pObject : new Map[] {(Map) pObject};
-			Class beanClass = target.getComponentType();
-			Object[] beans = (Object[]) Array.newInstance(beanClass,
+			final Object[] mapArray = object.getClass().isArray() ? (Object[]) object : new Map[] {(Map) object};
+			final Class beanClass = target.getComponentType();
+			final Object[] beans = (Object[]) Array.newInstance(beanClass,
 					mapArray.length);
 			for (int i = 0; i < mapArray.length; i++) {
-				Map src = (Map) mapArray[i];
-				Object bean = ClassUtil.newInstance(beanClass);
+				final Map src = (Map) mapArray[i];
+				final Object bean = ClassUtil.newInstance(beanClass);
 				copyProperties(src, bean);
 				beans[i] = bean;
 			}
 			return beans;
 		} else {
 			Map src = null;
-			if(pObject.getClass().isArray()) {
-				Object[] mapArray = (Object[]) pObject;
+			if(object.getClass().isArray()) {
+				final Object[] mapArray = (Object[]) object;
 				if (mapArray.length != 1) {
 					throw new S2XmlRpcException("SXXX");// TODO
 				}
 				src = (Map) mapArray[0];
 			} else {
-				src = (Map) pObject;
+				src = (Map) object;
 			}
-			Object bean = ClassUtil.newInstance(target);
+			final Object bean = ClassUtil.newInstance(target);
 			copyProperties(src, bean);			
 			return bean;
 		}
 	}
 
-	public Object backConvert(Object pObject) {
+	/**
+	 * 逆変換を行います。逆変換はサポートされません。
+	 * @param object 変換元
+	 * @return 変換後のオブジェクト
+	 */
+	public Object backConvert(final Object object) {
     	throw new UnsupportedOperationException();
 	}
-	
-    public static void copyProperties(Map src, Object dest) {
+
+	/**
+	 * プロパティのコピーを行います。
+	 * @param src コピー元
+	 * @param dest コピー先
+	 */
+    private static void copyProperties(final Map src, final Object dest) {
         if (src == null || dest == null) {
             return;
         }
-        BeanDesc beanDesc = BeanDescFactory.getBeanDesc(dest.getClass());
+        final BeanDesc beanDesc = BeanDescFactory.getBeanDesc(dest.getClass());
         for (Iterator i = src.keySet().iterator(); i.hasNext();) {
-            String key = (String) i.next();
+            final String key = (String) i.next();
             if (!beanDesc.hasPropertyDesc(key)) {
                 continue;
             }
-            PropertyDesc pd = beanDesc.getPropertyDesc(key);
+            final PropertyDesc pd = beanDesc.getPropertyDesc(key);
             if (pd.hasWriteMethod()) {
-            	BeanTypeConverterFactory factory = BeanTypeConverterFactory.getFactory();
-            	TypeConverter converter = factory.getTypeConverter(pd.getPropertyType());
-            	if (converter instanceof BeanTypeConverter) {
-                    pd.setValue(dest, converter.convert(src.get(key)));
-            	}  else {
-                    pd.setValue(dest, src.get(key));
-            	}
+            	final BeanTypeConverterFactory factory = BeanTypeConverterFactory.getFactory();
+            	final TypeConverter converter = factory.getTypeConverter(pd.getPropertyType());
+                pd.setValue(dest, converter.convert(src.get(key)));
             }
         }
     }
-
 }

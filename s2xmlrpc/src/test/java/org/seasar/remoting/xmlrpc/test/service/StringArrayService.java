@@ -15,9 +15,12 @@
  */
 package org.seasar.remoting.xmlrpc.test.service;
 
+import org.seasar.remoting.xmlrpc.test.entity.Entity1;
+
 /**
  * @author agata
  */
 public interface StringArrayService {
     String[] echo(String[] text);
+    Entity1 echo2(Entity1 entity);
 }
