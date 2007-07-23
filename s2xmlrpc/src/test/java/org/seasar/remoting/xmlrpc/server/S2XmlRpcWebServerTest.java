@@ -25,6 +25,7 @@ import org.seasar.remoting.xmlrpc.client.S2XmlRpcClientFactory;
 import org.seasar.remoting.xmlrpc.converter.BeanTypeConverterFactory;
 import org.seasar.remoting.xmlrpc.factory.BeanTypeFactory;
 import org.seasar.remoting.xmlrpc.test.entity.Employee;
+import org.seasar.remoting.xmlrpc.test.entity.Entity1;
 import org.seasar.remoting.xmlrpc.test.service.Echo;
 import org.seasar.remoting.xmlrpc.test.service.EmployeeService;
 import org.seasar.remoting.xmlrpc.test.service.StringArrayService;
@@ -93,5 +94,16 @@ public class S2XmlRpcWebServerTest extends S2TestCase {
     	assertEquals(2, actual.length);
     	assertEquals("one", actual[0]);
     	assertEquals("two", actual[1]);
+    }
+
+    public void testStringArrayServiceEcho2() throws Exception {
+    	Entity1 entity = new Entity1();
+    	entity.setWord("word1");
+    	entity.setNames(new String[] {"name1", "name2"});
+    	Entity1 actual = stringArrayService.echo2(entity);
+    	assertEquals("word1", actual.getWord());
+    	assertEquals(2, actual.getNames().length);
+    	assertEquals("name1", actual.getNames()[0]);
+    	assertEquals("name2", actual.getNames()[1]);
     }
 }

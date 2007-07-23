@@ -23,57 +23,77 @@ import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
 import org.apache.xmlrpc.common.TypeConverter;
 import org.apache.xmlrpc.common.TypeConverterFactory;
 import org.seasar.framework.util.AssertionUtil;
+import org.seasar.remoting.common.connector.Connector;
 import org.seasar.remoting.common.connector.impl.URLBasedConnector;
 import org.seasar.remoting.xmlrpc.S2XmlRpcException;
 import org.seasar.remoting.xmlrpc.converter.BeanTypeConverterFactory;
 import org.seasar.remoting.xmlrpc.factory.BeanTypeFactory;
 
 /**
- * XML-RPCを呼び出すコネクタです。
- * 
+ * XML-RPCを呼び出すS2Remotingのコネクタです。
  * @author agata
+ * @see Connector
  */
 public class XmlRpcConnector extends URLBasedConnector {
 
+	/**
+	 * TypeConverterFactory
+	 */
 	private TypeConverterFactory typeConverterFactory = BeanTypeConverterFactory.getFactory();
 
-	private XmlRpcClient clientChache = null;
+	/**
+	 * XmlRpcClient
+	 */
+	private XmlRpcClient clientCache = null;
 	
     /**
      * デフォルトのコンストラクタ。
      */
-    public XmlRpcConnector() {
-    }
+    public XmlRpcConnector() {}
 
-    public void setTypeConverterFactory(TypeConverterFactory typeConverterFactory) {
+    /**
+     * コンストラクタ。
+     * @param typeConverterFactory TypeConverterFactory
+     */
+    public void setTypeConverterFactory(final TypeConverterFactory typeConverterFactory) {
     	this.typeConverterFactory = typeConverterFactory;
     }
     
-	public Object invoke(String remoteName, Method method, Object[] args)
+    /**
+     * リモートメソッドを実行します。
+     * @see Connector#invoke(String, Method, Object[])
+     * @param remoteName リモートコンポーネント名（ex:EmployeeService）
+     * @param method メソッド
+     * @param args 引数
+     */
+	public Object invoke(final String remoteName, final Method method, final Object[] args)
 			throws Throwable {
 		AssertionUtil.assertNotEmpty("remoteName", remoteName);
 		
-		String methodName = remoteName + "." + method.getName();
+		final String methodName = remoteName + "." + method.getName();
         Object result = null;
 		try {
-			XmlRpcClient client = getClient();
-	        result = client.execute(methodName, args);
+			result = getClient().execute(methodName, args);
 		} catch (XmlRpcException ex) {
 			throw new S2XmlRpcException("EXRP1001", new Object[] {methodName}, ex);
 		}
-        TypeConverter typeConverter = typeConverterFactory.getTypeConverter(method.getReturnType());
+        final TypeConverter typeConverter = typeConverterFactory.getTypeConverter(method.getReturnType());
         return typeConverter.convert(result);
 	}
 
+	/**
+	 * XmlRpcClientを生成・取得します。
+	 * @return XmlRpcClient
+	 */
 	private synchronized XmlRpcClient getClient() {
-		if(clientChache == null) {
-	        clientChache = new XmlRpcClient();
-	        XmlRpcClientConfigImpl config = new XmlRpcClientConfigImpl();
+		if(clientCache == null) {
+	        clientCache = new XmlRpcClient();
+	        final XmlRpcClientConfigImpl config = new XmlRpcClientConfigImpl();
 		    config.setServerURL(getBaseURL());
 		    config.setEnabledForExtensions(true);
-		    clientChache.setConfig(config);
-			clientChache.setTypeFactory(new BeanTypeFactory(clientChache));
+		    clientCache.setConfig(config);
+			clientCache.setTypeFactory(new BeanTypeFactory(clientCache));
 		}
-		return clientChache;
+		return clientCache;
 	}
 }

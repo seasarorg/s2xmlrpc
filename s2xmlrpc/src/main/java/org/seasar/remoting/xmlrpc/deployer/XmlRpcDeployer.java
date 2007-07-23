@@ -27,7 +27,6 @@ import org.seasar.framework.container.MetaDef;
 import org.seasar.framework.container.MetaDefAware;
 import org.seasar.framework.container.S2Container;
 import org.seasar.framework.log.Logger;
-import org.seasar.remoting.xmlrpc.S2XmlRpcConstants;
 import org.seasar.remoting.xmlrpc.util.S2XmlRpcUtil;
 
 public class XmlRpcDeployer {
@@ -58,8 +57,7 @@ public class XmlRpcDeployer {
 	}
 
 	protected void process(final ComponentDef componentDef, PropertyHandlerMapping phm) {
-		final MetaDef serviceMetaDef = getMetaDef(componentDef,
-				S2XmlRpcConstants.META_SERVICE);
+		final MetaDef serviceMetaDef = getMetaDef(componentDef);
 		if (serviceMetaDef != null) {
 			try {
 				String remoteName = S2XmlRpcUtil.getRemoteName(componentDef);
@@ -75,8 +73,7 @@ public class XmlRpcDeployer {
 		}
 	}
 
-	protected MetaDef getMetaDef(final MetaDefAware metaDefSupport,
-			final String localName) {
+	protected MetaDef getMetaDef(final MetaDefAware metaDefSupport) {
 		try {
 			for (int i = 0; i < metaDefSupport.getMetaDefSize(); ++i) {
 				final MetaDef metaDef = metaDefSupport.getMetaDef(i);

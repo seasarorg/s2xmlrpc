@@ -16,16 +16,13 @@
 package org.seasar.remoting.xmlrpc;
 
 /**
- * 
+ * S2XML-RPC用の定数インターフェイス。
  * @author agata
- * 
  */
 public interface S2XmlRpcConstants {
-
     /**
      * diconファイルで、コンポーネントがXML-RPCで公開されるコンポーネントであることを示すために <code>&lt;meta&gt;</code>
      * 要素に指定する <code>name</code> 属性値です。
      */
-    String META_SERVICE               = "service";
-
+    //static String META_SERVICE               = "xmlrpc";
 }

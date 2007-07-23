@@ -18,23 +18,37 @@ package org.seasar.remoting.xmlrpc;
 import org.seasar.framework.exception.SRuntimeException;
 
 /**
- * S2XmlRpcのクライアントでエラーが発生した際にスローされる例外です。
- * 
+ * S2XML-RPCのクライアントでエラーが発生した際にスローされる例外です。
  * @author agata
  */
 public class S2XmlRpcException extends SRuntimeException {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 6031346114420604710L;
 
-    public S2XmlRpcException(String code) {
+	/**
+	 * コンストラクタ
+	 * @param code メッセージコード
+	 */
+	public S2XmlRpcException(final String code) {
         super(code);
     }
 
-    public S2XmlRpcException(String code, Object[] args) {
+	/**
+	 * コンストラクタ
+	 * @param code メッセージコード
+	 * @param args メッセージに埋め込まれるの引数
+	 */
+    public S2XmlRpcException(final String code, final Object[] args) {
         super(code, args);
     }
 
-    public S2XmlRpcException(String code, Object[] args, Throwable cause) {
+    /**
+	 * コンストラクタ
+	 * @param code メッセージコード
+	 * @param args メッセージに埋め込まれるの引数
+     * @param cause 元の例外
+     */
+    public S2XmlRpcException(final String code, final Object[] args, final Throwable cause) {
         super(code, args, cause);
     }
 }

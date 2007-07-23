@@ -22,50 +22,97 @@ import java.lang.reflect.Proxy;
 import org.apache.xmlrpc.client.XmlRpcClient;
 import org.apache.xmlrpc.common.TypeConverter;
 import org.apache.xmlrpc.common.TypeConverterFactory;
-import org.apache.xmlrpc.common.TypeConverterFactoryImpl;
-
+import org.seasar.remoting.xmlrpc.converter.BeanTypeConverterFactory;
 
 /**
+ * S2Containerに対応しRPCを呼び出すプロキシイを生成するファクトリクラスです。
+ * @author agata
  */
 public class S2XmlRpcClientFactory {
+	/**
+	 * XmlRpcClient
+	 */
     private final XmlRpcClient client;
+
+    /**
+     * TypeConverterFactory
+     */
     private final TypeConverterFactory typeConverterFactory;
+    
+    /**
+     * オブジェクトがローカルで実行されるかどうかどうか。trueならローカル
+     */
     private boolean objectMethodLocal;
-
-    public S2XmlRpcClientFactory(XmlRpcClient pClient, TypeConverterFactory pTypeConverterFactory) {
-        typeConverterFactory = pTypeConverterFactory;
-        client = pClient;
+    
+    /**
+     * コンストラクタ
+     * @param client XmlRpcClient
+     * @param typeConverterFactory TypeConverterFactory
+     */
+    public S2XmlRpcClientFactory(final XmlRpcClient client, 
+    		final TypeConverterFactory typeConverterFactory) {
+        this.client = client;
+        this.typeConverterFactory = typeConverterFactory;
     }
-
-    public S2XmlRpcClientFactory(XmlRpcClient pClient) {
-        this(pClient, new TypeConverterFactoryImpl());
+    
+    /**
+     * コンストラクタ。
+     * @param client XmlRpcClient
+     */
+    public S2XmlRpcClientFactory(final XmlRpcClient client) {
+        this(client, BeanTypeConverterFactory.getFactory());
     }
-
+    
+    /**
+     * XmlRpcClientを取得します。
+     * @return XmlRpcClient
+     */
     public XmlRpcClient getClient() {
         return client;
     }
-
+    
+    /**
+     * オブジェクトがローカルかどうかを取得します。
+     * @return trueならローカルで実行
+     */
     public boolean isObjectMethodLocal() {
         return objectMethodLocal;
     }
-
-    public void setObjectMethodLocal(boolean pObjectMethodLocal) {
-        objectMethodLocal = pObjectMethodLocal;
+    
+    /**
+     * オブジェクトがローカルかどうかを設定します。
+     * @param objectMethodLocal trueならローカルで実行
+     */
+    public void setObjectMethodLocal(final boolean objectMethodLocal) {
+        this.objectMethodLocal = objectMethodLocal;
     }
-
-    public Object newInstance(Class pClass, String name) {
-        return newInstance(Thread.currentThread().getContextClassLoader(), pClass, name);
+    
+    /**
+     * RPCを呼び出すプロキシを生成します。
+     * @param clazz コンポーネントインターフェイスのクラス
+     * @param name コンポーネント名
+     * @return　コンポーネントインターフェイスを実装するプロキシオブジェクト
+     */
+    public Object newInstance(final Class clazz, final String name) {
+        return newInstance(Thread.currentThread().getContextClassLoader(), clazz, name);
     }
-
-    public Object newInstance(ClassLoader pClassLoader, final Class pClass, final String name) {
-        return Proxy.newProxyInstance(pClassLoader, new Class[]{pClass}, new InvocationHandler(){
-            public Object invoke(Object pProxy, Method pMethod, Object[] pArgs) throws Throwable {
-                if (isObjectMethodLocal()  &&  pMethod.getDeclaringClass().equals(Object.class)) {
-                    return pMethod.invoke(pProxy, pArgs);
+    
+    /**
+     * RPCを呼び出すプロキシを生成します。
+     * @param classLoader クラスローダー
+     * @param clazz コンポーネントインターフェイスのクラス
+     * @param name コンポーネント名
+     * @return　コンポーネントインターフェイスを実装するプロキシオブジェクト
+     */
+    public Object newInstance(final ClassLoader classLoader, final Class pClass, final String name) {
+        return Proxy.newProxyInstance(classLoader, new Class[]{pClass}, new InvocationHandler(){
+            public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
+                if (isObjectMethodLocal()  &&  method.getDeclaringClass().equals(Object.class)) {
+                    return method.invoke(proxy, args);
                 }
-                String methodName = name + "." + pMethod.getName();
-                Object result = client.execute(methodName, pArgs);
-                TypeConverter typeConverter = typeConverterFactory.getTypeConverter(pMethod.getReturnType());
+                final String methodName = name + "." + method.getName();
+                final Object result = client.execute(methodName, args);
+                final TypeConverter typeConverter = typeConverterFactory.getTypeConverter(method.getReturnType());
                 return typeConverter.convert(result);
             }
         });
