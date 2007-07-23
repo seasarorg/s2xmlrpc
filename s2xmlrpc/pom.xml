@@ -9,7 +9,7 @@
   <artifactId>s2xmlrpc</artifactId>
   <packaging>jar</packaging>
   <name>S2XML-RPC Project</name>
-  <version>0.3.0</version>
+  <version>0.4.0-SNAPSHOT</version>
   <description></description>
   <url>http://sandbox.s2xmlrpc.seasar.org/</url>
   <issueManagement>
