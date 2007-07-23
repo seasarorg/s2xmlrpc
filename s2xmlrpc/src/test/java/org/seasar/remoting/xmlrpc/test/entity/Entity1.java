@@ -15,6 +15,8 @@
  */
 package org.seasar.remoting.xmlrpc.test.entity;
 
+import java.util.List;
+
 /**
  * Bean内の配列をテストするためのクラスです。
  * @author agata
@@ -22,6 +24,7 @@ package org.seasar.remoting.xmlrpc.test.entity;
 public class Entity1 {
 	private String word;
 	private String[] names;
+	private List names2;
 	public String getWord() {
 		return word;
 	}
@@ -33,5 +36,11 @@ public class Entity1 {
 	}
 	public void setNames(String[] names) {
 		this.names = names;
+	}
+	public List getNames2() {
+		return names2;
+	}
+	public void setNames2(List names2) {
+		this.names2 = names2;
 	}
 }

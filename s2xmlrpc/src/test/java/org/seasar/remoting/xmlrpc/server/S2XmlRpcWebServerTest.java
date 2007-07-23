@@ -16,6 +16,8 @@
 package org.seasar.remoting.xmlrpc.server;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.xmlrpc.client.XmlRpcClient;
@@ -100,10 +102,17 @@ public class S2XmlRpcWebServerTest extends S2TestCase {
     	Entity1 entity = new Entity1();
     	entity.setWord("word1");
     	entity.setNames(new String[] {"name1", "name2"});
+    	List names2 = new ArrayList();
+    	names2.add("name3");
+    	names2.add("name4");
+    	entity.setNames2(names2);
     	Entity1 actual = stringArrayService.echo2(entity);
     	assertEquals("word1", actual.getWord());
     	assertEquals(2, actual.getNames().length);
     	assertEquals("name1", actual.getNames()[0]);
     	assertEquals("name2", actual.getNames()[1]);
+    	assertEquals(2, actual.getNames2().size());
+    	assertEquals("name3", actual.getNames2().get(0));
+    	assertEquals("name4", actual.getNames2().get(1));
     }
 }
