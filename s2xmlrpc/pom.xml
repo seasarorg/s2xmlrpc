@@ -114,7 +114,6 @@
             <link>http://www.junit.org/junit/javadoc/3.8.1/</link>
           </links>
         </configuration>
-        <!--
         <executions>
           <execution>
             <id>javadoc-jar</id>
@@ -124,7 +123,6 @@
             </goals>
           </execution>
         </executions>
-        -->
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
